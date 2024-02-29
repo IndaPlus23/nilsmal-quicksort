@@ -34,10 +34,12 @@ class QuickSort {
                 j--;
             if (i < j)
                 // swap elements using fancy tuple stuff 
+                // swap the position elements
                 (arr[i], arr[j]) = (arr[j], arr[i]); 
         }
         
         // another fancy tuple swap 
+
         (arr[left], arr[j]) = (arr[j], pivot); 
 
         return j;
@@ -51,22 +53,21 @@ class QuickSort {
 
     static void Main(string[] args)
     {
-        // Read input from standard input
+        // Read from standard input, this is so slooooow
         string input = Console.ReadLine();
 
-        // Process and utilize the input as needed
         if (!string.IsNullOrEmpty(input))
         {
             string[] numbersStr = input.Split(' ');
-            int[] arr = new int[numbersStr.Length - 1];
+            int[] arr = new int[int.Parse(numbersStr[0])];
 
-            for (int i = 0; i <= numbersStr.Length - 2; i++)
+            for (int i = 0; i <= int.Parse(numbersStr[0]) - 1; i++)
             {
                 arr[i] = int.Parse(numbersStr[i + 1]);
             }
 
             // Sort the array
-            Array.Sort(arr);
+            Sort(arr);
 
             // Print the sorted array
             PrintArray(arr);

@@ -23,39 +23,24 @@ class QuickSort {
     }
 
     private static int Partition(int[] arr, int left, int right) {
-        int mid = left + (right - left) / 2;
-        int first = arr[left];
-        int middle = arr[mid];
-        int last = arr[right];
-
-        int pivotValue = MedianOfThree(first, middle, last);
-
-        int i = left;
+        int pivot = arr[left];
+        int i = left + 1;
         int j = right;
 
-        while (true) {
-            while (arr[i] < pivotValue)
+        while (i <= j) {
+            while (i <= j && arr[i] <= pivot)
                 i++;
-            while (arr[j] > pivotValue)
+            while (i <= j && arr[j] > pivot)
                 j--;
-            if (i >= j)
-                break;
-            // Swap arr[i] and arr[j]
-            (arr[i], arr[j]) = (arr[j], arr[i]);
-            i++;
-            j--;
+            if (i < j)
+                // swap elements using fancy tuple stuff 
+                (arr[i], arr[j]) = (arr[j], arr[i]); 
         }
         
-        return j;
-    }
+        // another fancy tuple swap 
+        (arr[left], arr[j]) = (arr[j], pivot); 
 
-    private static int MedianOfThree(int a, int b, int c) {
-        if ((a <= b && b <= c) || (c <= b && b <= a))
-            return b; // b is median
-        else if ((b <= a && a <= c) || (c <= a && a <= b))
-            return a; // a is median
-        else
-            return c; // c is median
+        return j;
     }
 
     public static void PrintArray(int[] arr) {
@@ -64,19 +49,27 @@ class QuickSort {
         Console.WriteLine();
     }
 
-    static void Main(string[] args) {
-
+    static void Main(string[] args)
+    {
+        // Read input from standard input
         string input = Console.ReadLine();
-        string[] numbersStr = input.Split(' ');
 
-        int[] arr = new int[numbersStr.Length -1];
-        for (int i = 0; i <= numbersStr.Length - 2; i++)
+        // Process and utilize the input as needed
+        if (!string.IsNullOrEmpty(input))
         {
-            arr[i] = int.Parse(numbersStr[i+1]);
+            string[] numbersStr = input.Split(' ');
+            int[] arr = new int[numbersStr.Length - 1];
+
+            for (int i = 0; i <= numbersStr.Length - 2; i++)
+            {
+                arr[i] = int.Parse(numbersStr[i + 1]);
+            }
+
+            // Sort the array
+            Array.Sort(arr);
+
+            // Print the sorted array
+            PrintArray(arr);
         }
-
-        Sort(arr);
-
-        PrintArray(arr);
     }
 }

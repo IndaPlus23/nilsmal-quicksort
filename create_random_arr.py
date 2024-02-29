@@ -7,11 +7,12 @@ def main(array_len, file):
     if os.path.exists(file): os.remove(file)
     
     f = open(file, "w")
-    [f.write(f"{random.randint(0, array_len)}, ") for _ in range(array_len-1)]
+    f.write(f"{array_len} ")
+    [f.write(f"{random.randint(0, array_len)} ") for _ in range(array_len)]
 
 if __name__ == "__main__":
     
-    ARRAY_LEN = "100 000 000"
+    ARRAY_LEN = "1 000 000"
     FILE = "rand_arr.txt"
 
     start_time = time.time()

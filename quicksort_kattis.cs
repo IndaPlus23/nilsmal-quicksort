@@ -1,48 +1,59 @@
 using System;
-using System.IO;
-using System.Collections.Generic;
-
+// using System.Diagnostics;
 class QuickSort {
+    private const int InsertionSortThreshold = 15; // Set your threshold here
+
     public static void Sort(int[] arr) {
-        // check if array is even a thing
         if (arr == null || arr.Length == 0)
             return;
-        // arr + check posisiton left + check posistion right
         Sort(arr, 0, arr.Length - 1);
     }
-
     private static void Sort(int[] arr, int left, int right) {
-        // when positions overlap, exit
-        if (left >= right)
-            return;
+        while (left < right) {
+            int pivotIndex = Partition(arr, left, right);
+            Sort(arr, left, pivotIndex - 1); // Sort smaller part first
+            left = pivotIndex + 1; // Handle larger part in next iteration (tail recursion)
+        }
+    }
 
+    private static int MedianOfThree(int a, int b, int c) {
+        return Math.Max(Math.Min(a, b), Math.Min(Math.Max(a, b), c));
+    }
 
-        int pivot = Partition(arr, left, right);
-        Sort(arr, left, pivot - 1);
-        Sort(arr, pivot + 1, right);
+    private static void Swap(int[] arr, int i, int j) {
+        (arr[i], arr[j]) = (arr[j], arr[i]);
     }
 
     private static int Partition(int[] arr, int left, int right) {
         int pivot = arr[left];
-        int i = left + 1;
+        int i = left;
         int j = right;
 
-        while (i <= j) {
-            while (i <= j && arr[i] <= pivot)
+        while (true) {
+            while (i <= right && arr[i] < pivot)
                 i++;
-            while (i <= j && arr[j] > pivot)
+            while (j >= left && arr[j] > pivot)
                 j--;
-            if (i < j)
-                // swap elements using fancy tuple stuff 
-                // swap the position elements
-                (arr[i], arr[j]) = (arr[j], arr[i]); 
+            if (i >= j)
+                return j;
+            // Swap arr[i] and arr[j]
+            (arr[i], arr[j]) = (arr[j], arr[i]);
+            i++;
+            j--;
         }
-        
-        // another fancy tuple swap 
+    }
+    private static void InsertionSort(int[] arr, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
+            int key = arr[i];
+            int j = i - 1;
 
-        (arr[left], arr[j]) = (arr[j], pivot); 
+            while (j >= left && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
 
-        return j;
+            arr[j + 1] = key;
+        }
     }
 
     public static void PrintArray(int[] arr) {
@@ -53,23 +64,32 @@ class QuickSort {
 
     static void Main(string[] args)
     {
-        // Read from standard input, this is so slooooow
         string input = Console.ReadLine();
 
         if (!string.IsNullOrEmpty(input))
         {
+            // Stopwatch stopwatch1 = new Stopwatch();
+            // stopwatch1.Start();
             string[] numbersStr = input.Split(' ');
             int[] arr = new int[int.Parse(numbersStr[0])];
 
-            for (int i = 0; i <= int.Parse(numbersStr[0]) - 1; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 arr[i] = int.Parse(numbersStr[i + 1]);
             }
 
-            // Sort the array
-            Sort(arr);
+            // stopwatch1.Stop();
 
-            // Print the sorted array
+            // // Console.WriteLine($"Execution time: {stopwatch1.Elapsed.TotalSeconds:F3} seconds");
+
+
+            // Stopwatch stopwatch2 = new Stopwatch();
+            // stopwatch2.Start();
+            Sort(arr);
+            // stopwatch2.Stop();
+
+            // // Console.WriteLine($"Execution time: {stopwatch2.Elapsed.TotalSeconds:F3} seconds");
+
             PrintArray(arr);
         }
     }
